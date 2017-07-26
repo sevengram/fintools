@@ -1,9 +1,8 @@
-import re
 from functools import wraps
-
-import pandas
+import re
 
 from .alphavantage import AlphaVantage as av
+import pandas
 
 
 class SectorPerformances(av):

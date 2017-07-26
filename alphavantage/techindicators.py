@@ -214,37 +214,37 @@ class TechIndicators(av):
     arise
 
     Keyword Arguments:
-        symbol:  the symbol for the equity we want to get its data
-        interval:  time interval between two conscutive values,
-            supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
-            'weekly', 'monthly' (default '60min')
-        series_type:  The desired price type in the time series. Four types
-            are supported: 'close', 'open', 'high', 'low' (default 'close')
-        fastperiod:  Positive integers are accepted (default=None)
-        slowperiod:  Positive integers are accepted (default=None)
-        signalperiod:  Positive integers are accepted (default=None)
-        fastmatype:  Moving average type for the faster moving average.
-            By default, fastmatype=0. Integers 0 - 8 are accepted
-            (check  down the mappings) or the string containing the math type can
-            also be used.
-        slowmatype:  Moving average type for the slower moving average.
-            By default, slowmatype=0. Integers 0 - 8 are accepted
-            (check down the mappings) or the string containing the math type can
-            also be used.
-        signalmatype:  Moving average type for the signal moving average.
-            By default, signalmatype=0. Integers 0 - 8 are accepted
-            (check down the mappings) or the string containing the math type can
-            also be used.
+      symbol:  the symbol for the equity we want to get its data
+      interval:  time interval between two conscutive values,
+          supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
+          'weekly', 'monthly' (default '60min')
+      series_type:  The desired price type in the time series. Four types
+          are supported: 'close', 'open', 'high', 'low' (default 'close')
+      fastperiod:  Positive integers are accepted (default=None)
+      slowperiod:  Positive integers are accepted (default=None)
+      signalperiod:  Positive integers are accepted (default=None)
+      fastmatype:  Moving average type for the faster moving average.
+          By default, fastmatype=0. Integers 0 - 8 are accepted
+          (check  down the mappings) or the string containing the math type can
+          also be used.
+      slowmatype:  Moving average type for the slower moving average.
+          By default, slowmatype=0. Integers 0 - 8 are accepted
+          (check down the mappings) or the string containing the math type can
+          also be used.
+      signalmatype:  Moving average type for the signal moving average.
+          By default, signalmatype=0. Integers 0 - 8 are accepted
+          (check down the mappings) or the string containing the math type can
+          also be used.
 
-            * 0 = Simple Moving Average (SMA),
-            * 1 = Exponential Moving Average (EMA),
-            * 2 = Weighted Moving Average (WMA),
-            * 3 = Double Exponential Moving Average (DEMA),
-            * 4 = Triple Exponential Moving Average (TEMA),
-            * 5 = Triangular Moving Average (TRIMA),
-            * 6 = T3 Moving Average,
-            * 7 = Kaufman Adaptive Moving Average (KAMA),
-            * 8 = MESA Adaptive Moving Average (MAMA)
+          * 0 = Simple Moving Average (SMA),
+          * 1 = Exponential Moving Average (EMA),
+          * 2 = Weighted Moving Average (WMA),
+          * 3 = Double Exponential Moving Average (DEMA),
+          * 4 = Triple Exponential Moving Average (TEMA),
+          * 5 = Triangular Moving Average (TRIMA),
+          * 6 = T3 Moving Average,
+          * 7 = Kaufman Adaptive Moving Average (KAMA),
+          * 8 = MESA Adaptive Moving Average (MAMA)
     """
     _FUNCTION_KEY = "MACDEXT"
     return _FUNCTION_KEY, 'Technical Analysis: MACDEXT', 'Meta Data'
@@ -258,34 +258,34 @@ class TechIndicators(av):
     arise
 
     Keyword Arguments:
-        symbol:  the symbol for the equity we want to get its data
-        interval:  time interval between two conscutive values,
-            supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
-            'weekly', 'monthly' (default '60min')
-        fastkperiod:  The time period of the fastk moving average. Positive
-            integers are accepted (default=None)
-        slowkperiod:  The time period of the slowk moving average. Positive
-            integers are accepted (default=None)
-        slowdperiod: The time period of the slowd moving average. Positive
-            integers are accepted (default=None)
-        slowkmatype:  Moving average type for the slowk moving average.
-            By default, fastmatype=0. Integers 0 - 8 are accepted
-            (check  down the mappings) or the string containing the math type can
-            also be used.
-        slowdmatype:  Moving average type for the slowd moving average.
-            By default, slowmatype=0. Integers 0 - 8 are accepted
-            (check down the mappings) or the string containing the math type can
-            also be used.
+      symbol:  the symbol for the equity we want to get its data
+      interval:  time interval between two conscutive values,
+          supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
+          'weekly', 'monthly' (default '60min')
+      fastkperiod:  The time period of the fastk moving average. Positive
+          integers are accepted (default=None)
+      slowkperiod:  The time period of the slowk moving average. Positive
+          integers are accepted (default=None)
+      slowdperiod: The time period of the slowd moving average. Positive
+          integers are accepted (default=None)
+      slowkmatype:  Moving average type for the slowk moving average.
+          By default, fastmatype=0. Integers 0 - 8 are accepted
+          (check  down the mappings) or the string containing the math type can
+          also be used.
+      slowdmatype:  Moving average type for the slowd moving average.
+          By default, slowmatype=0. Integers 0 - 8 are accepted
+          (check down the mappings) or the string containing the math type can
+          also be used.
 
-            * 0 = Simple Moving Average (SMA),
-            * 1 = Exponential Moving Average (EMA),
-            * 2 = Weighted Moving Average (WMA),
-            * 3 = Double Exponential Moving Average (DEMA),
-            * 4 = Triple Exponential Moving Average (TEMA),
-            * 5 = Triangular Moving Average (TRIMA),
-            * 6 = T3 Moving Average,
-            * 7 = Kaufman Adaptive Moving Average (KAMA),
-            * 8 = MESA Adaptive Moving Average (MAMA)
+          * 0 = Simple Moving Average (SMA),
+          * 1 = Exponential Moving Average (EMA),
+          * 2 = Weighted Moving Average (WMA),
+          * 3 = Double Exponential Moving Average (DEMA),
+          * 4 = Triple Exponential Moving Average (TEMA),
+          * 5 = Triangular Moving Average (TRIMA),
+          * 6 = T3 Moving Average,
+          * 7 = Kaufman Adaptive Moving Average (KAMA),
+          * 8 = MESA Adaptive Moving Average (MAMA)
     """
     _FUNCTION_KEY = "STOCH"
     return _FUNCTION_KEY, 'Technical Analysis: STOCH', 'Meta Data'
@@ -299,28 +299,28 @@ class TechIndicators(av):
     arise
 
     Keyword Arguments:
-        symbol:  the symbol for the equity we want to get its data
-        interval:  time interval between two conscutive values,
-            supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
-            'weekly', 'monthly' (default '60min')
-        fastkperiod:  The time period of the fastk moving average. Positive
-            integers are accepted (default=None)
-        fastdperiod:  The time period of the fastd moving average. Positive
-            integers are accepted (default=None)
-        fastdmatype:  Moving average type for the fastdmatype moving average.
-            By default, fastmatype=0. Integers 0 - 8 are accepted
-            (check  down the mappings) or the string containing the math type can
-            also be used.
+      symbol:  the symbol for the equity we want to get its data
+      interval:  time interval between two conscutive values,
+          supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
+          'weekly', 'monthly' (default '60min')
+      fastkperiod:  The time period of the fastk moving average. Positive
+          integers are accepted (default=None)
+      fastdperiod:  The time period of the fastd moving average. Positive
+          integers are accepted (default=None)
+      fastdmatype:  Moving average type for the fastdmatype moving average.
+          By default, fastmatype=0. Integers 0 - 8 are accepted
+          (check  down the mappings) or the string containing the math type can
+          also be used.
 
-            * 0 = Simple Moving Average (SMA),
-            * 1 = Exponential Moving Average (EMA),
-            * 2 = Weighted Moving Average (WMA),
-            * 3 = Double Exponential Moving Average (DEMA),
-            * 4 = Triple Exponential Moving Average (TEMA),
-            * 5 = Triangular Moving Average (TRIMA),
-            * 6 = T3 Moving Average,
-            * 7 = Kaufman Adaptive Moving Average (KAMA),
-            * 8 = MESA Adaptive Moving Average (MAMA)
+          * 0 = Simple Moving Average (SMA),
+          * 1 = Exponential Moving Average (EMA),
+          * 2 = Weighted Moving Average (WMA),
+          * 3 = Double Exponential Moving Average (DEMA),
+          * 4 = Triple Exponential Moving Average (TEMA),
+          * 5 = Triangular Moving Average (TRIMA),
+          * 6 = T3 Moving Average,
+          * 7 = Kaufman Adaptive Moving Average (KAMA),
+          * 8 = MESA Adaptive Moving Average (MAMA)
     """
     _FUNCTION_KEY = "STOCHF"
     return _FUNCTION_KEY, 'Technical Analysis: STOCHF', 'Meta Data'
@@ -333,13 +333,13 @@ class TechIndicators(av):
     objects as data and meta_data. It raises ValueError when problems arise
 
     Keyword Arguments:
-        symbol:  the symbol for the equity we want to get its data
-        interval:  time interval between two conscutive values,
-            supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
-            'weekly', 'monthly' (default '60min')
-        time_period:  How many data points to average (default 20)
-        series_type:  The desired price type in the time series. Four types
-            are supported: 'close', 'open', 'high', 'low' (default 'close')
+      symbol:  the symbol for the equity we want to get its data
+      interval:  time interval between two conscutive values,
+        supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
+        'weekly', 'monthly' (default '60min')
+      time_period:  How many data points to average (default 20)
+      series_type:  The desired price type in the time series. Four types
+        are supported: 'close', 'open', 'high', 'low' (default 'close')
     """
     _FUNCTION_KEY = "RSI"
     return _FUNCTION_KEY, 'Technical Analysis: RSI', 'Meta Data'
@@ -354,31 +354,31 @@ class TechIndicators(av):
     arise
 
     Keyword Arguments:
-        symbol:  the symbol for the equity we want to get its data
-        interval:  time interval between two conscutive values,
-            supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
-            'weekly', 'monthly' (default '60min')
-        time_period:  How many data points to average (default 20)
-        series_type:  The desired price type in the time series. Four types
-            are supported: 'close', 'open', 'high', 'low' (default 'close')
-        fastkperiod:  The time period of the fastk moving average. Positive
-            integers are accepted (default=None)
-        fastdperiod:  The time period of the fastd moving average. Positive
-            integers are accepted (default=None)
-        fastdmatype:  Moving average type for the fastdmatype moving average.
-            By default, fastmatype=0. Integers 0 - 8 are accepted
-            (check  down the mappings) or the string containing the math type can
-            also be used.
+      symbol:  the symbol for the equity we want to get its data
+      interval:  time interval between two conscutive values,
+          supported values are '1min', '5min', '15min', '30min', '60min', 'daily',
+          'weekly', 'monthly' (default '60min')
+      time_period:  How many data points to average (default 20)
+      series_type:  The desired price type in the time series. Four types
+          are supported: 'close', 'open', 'high', 'low' (default 'close')
+      fastkperiod:  The time period of the fastk moving average. Positive
+          integers are accepted (default=None)
+      fastdperiod:  The time period of the fastd moving average. Positive
+          integers are accepted (default=None)
+      fastdmatype:  Moving average type for the fastdmatype moving average.
+          By default, fastmatype=0. Integers 0 - 8 are accepted
+          (check  down the mappings) or the string containing the math type can
+          also be used.
 
-            * 0 = Simple Moving Average (SMA),
-            * 1 = Exponential Moving Average (EMA),
-            * 2 = Weighted Moving Average (WMA),
-            * 3 = Double Exponential Moving Average (DEMA),
-            * 4 = Triple Exponential Moving Average (TEMA),
-            * 5 = Triangular Moving Average (TRIMA),
-            * 6 = T3 Moving Average,
-            * 7 = Kaufman Adaptive Moving Average (KAMA),
-            * 8 = MESA Adaptive Moving Average (MAMA)
+          * 0 = Simple Moving Average (SMA),
+          * 1 = Exponential Moving Average (EMA),
+          * 2 = Weighted Moving Average (WMA),
+          * 3 = Double Exponential Moving Average (DEMA),
+          * 4 = Triple Exponential Moving Average (TEMA),
+          * 5 = Triangular Moving Average (TRIMA),
+          * 6 = T3 Moving Average,
+          * 7 = Kaufman Adaptive Moving Average (KAMA),
+          * 8 = MESA Adaptive Moving Average (MAMA)
     """
     _FUNCTION_KEY = "STOCHRSI"
     return _FUNCTION_KEY, 'Technical Analysis: STOCHRSI', 'Meta Data'

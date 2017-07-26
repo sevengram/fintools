@@ -1,7 +1,7 @@
+from functools import wraps
 import inspect
 import json
 import re
-from functools import wraps
 from urllib.request import urlopen
 
 import pandas
@@ -15,30 +15,6 @@ class AlphaVantage:
   _ALPHA_VANTAGE_API_URL = "http://www.alphavantage.co/query?"
   _ALPHA_VANTAGE_MATH_MAP = ['SMA', 'EMA', 'WMA', 'DEMA', 'TEMA', 'TRIMA', 'T3',
                              'KAMA', 'MAMA']
-  _EXCHANGE_SUPPORTED = {'ASX': 'Australian Securities Exchange',
-                         'BOM': 'Bombay Stock Exchange',
-                         'BIT': 'Borsa Italiana Milan Stock Exchange',
-                         'TSE': 'Canadian/Toronto Securities Exchange',
-                         'FRA': 'Deutsche Boerse Frankfurt Stock Exchange',
-                         'ETR': 'Deutsche Boerse Frankfurt Stock Exchange',
-                         'AMS': 'Euronext Amsterdam',
-                         'EBR': 'Euronext Brussels',
-                         'ELI': 'Euronext Lisbon',
-                         'EPA': 'Euronext Paris',
-                         'LON': 'London Stock Exchange',
-                         'MCX': 'Moscow Exchange',
-                         'NASDAQ': 'NASDAQ Exchange',
-                         'CPH': 'NASDAQ OMX Copenhagen',
-                         'HEL': 'NASDAQ OMX Helsinki',
-                         'ICE': 'NASDAQ OMX Iceland',
-                         'STO': 'NASDAQ OMX Stockholm',
-                         'NSE': 'National Stock Exchange of India',
-                         'NYSE': 'New York Stock Exchange',
-                         'SGX': 'Singapore Exchange',
-                         'SHA': 'Shanghai Stock Exchange',
-                         'SHE': 'Shenzhen Stock Exchange',
-                         'TPE': 'Taiwan Stock Exchange',
-                         'TYO': 'Tokyo Stock Exchange'}
 
   def __init__(self, key=None, retries=5, output_format='json'):
     """ Initialize the class
@@ -102,8 +78,6 @@ class AlphaVantage:
         positional_count = 0
         defaults = argspec.defaults
 
-    # Actual decorating
-
     @wraps(func)
     def _call_wrapper(self, *args, **kwargs):
       used_kwargs = kwargs.copy()
@@ -162,6 +136,8 @@ class AlphaVantage:
         output_format = self.output_format.lower()
       elif 'json' or 'pandas' in override.lower():
         output_format = override.lower()
+      else:
+        output_format = None
       # Choose output format
       if output_format == 'json':
         return data, meta_data
@@ -186,18 +162,18 @@ class AlphaVantage:
     is given.
 
     Keyword Arguments:
-        matype:  The math type of the alpha vantage api. It accepts integers
-            or a string representing the math type.
+      matype:  The math type of the alpha vantage api. It accepts integers
+        or a string representing the math type.
 
-            * 0 = Simple Moving Average (SMA),
-            * 1 = Exponential Moving Average (EMA),
-            * 2 = Weighted Moving Average (WMA),
-            * 3 = Double Exponential Moving Average (DEMA),
-            * 4 = Triple Exponential Moving Average (TEMA),
-            * 5 = Triangular Moving Average (TRIMA),
-            * 6 = T3 Moving Average,
-            * 7 = Kaufman Adaptive Moving Average (KAMA),
-            * 8 = MESA Adaptive Moving Average (MAMA)
+        * 0 = Simple Moving Average (SMA),
+        * 1 = Exponential Moving Average (EMA),
+        * 2 = Weighted Moving Average (WMA),
+        * 3 = Double Exponential Moving Average (DEMA),
+        * 4 = Triple Exponential Moving Average (TEMA),
+        * 5 = Triangular Moving Average (TRIMA),
+        * 6 = T3 Moving Average,
+        * 7 = Kaufman Adaptive Moving Average (KAMA),
+        * 8 = MESA Adaptive Moving Average (MAMA)
     """
     # Check if it is an integer or a string
     try:
@@ -210,37 +186,20 @@ class AlphaVantage:
 
   @_retry
   def _handle_api_call(self, url):
-    """ Handle the return call from the  api and return a data and meta_data
+    """ Handle the return call from the api and return a data and meta_data
     object. It raises a ValueError on problems
 
     Keyword Arguments:
         url:  The url of the service
-        data_key:  The key for getting the data from the jso object
-        meta_data_key:  The key for getting the meta data information out of
-            the json object
     """
     response = urlopen(url)
     url_response = response.read()
     json_response = json.loads(url_response.decode('utf8'))
     if 'Error Message' in json_response or not json_response:
       if json_response:
-        raise ValueError('ERROR getting data from api',
+        raise ValueError('Error getting data from api',
                          json_response['Error Message'])
       else:
         raise ValueError('Error getting data from api, no return'
                          ' message from the api url (possibly wrong symbol/param)')
     return json_response
-
-  def is_exchange_supported(self, exchange_name):
-    """
-        Get if a specific global exchange type is supported by this library
-
-        Keyword Arguments:
-            exchange_name: The exchange type to check for
-        Returns:
-            The description of the given key or None
-    """
-    try:
-      return AlphaVantage._EXCHANGE_SUPPORTED[exchange_name]
-    except KeyError:
-      return None
