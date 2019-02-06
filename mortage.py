@@ -14,11 +14,11 @@ def compute(down_payment, length_of_finance, annual_interest_rate):
   monthly_house_value_increment_rate = annual_house_value_increment_rate / 12
   monthly_investment_return_rate = annual_investment_return_rate / 12
 
-  house_price = 290_000.0
-  current_money = 160_000.0
+  house_price = 290000.0
+  current_money = 160000.0
   number_of_months = 360
-  monthly_liquid_increment = 2_000.0
-  current_rental_price = 1_400.0
+  monthly_liquid_increment = 2000.0
+  current_rental_price = 1400.0
   rental_start_month = 36
 
   monthly_interest_rate = annual_interest_rate / 12.0
@@ -53,7 +53,7 @@ def compute(down_payment, length_of_finance, annual_interest_rate):
                                             monthly_inflation_rate,
                                             number_of_months)
   future_house_value = house_price * (1 + monthly_house_value_increment_rate) \
-                                     ** number_of_months
+                       ** number_of_months
 
   house_value = future_money_current_value(future_house_value,
                                            monthly_inflation_rate,
@@ -65,14 +65,14 @@ def compute(down_payment, length_of_finance, annual_interest_rate):
 if __name__ == '__main__':
   length_of_finance = 360
   annual_interest_rate = 0.04625
-  down_payment = range(60_000, 170_000, 10_000)
+  down_payment = range(60000, 170000, 10000)
   deltas = [compute(dp, length_of_finance,
                     annual_interest_rate) for dp in down_payment]
   plt.plot(down_payment, deltas, '.r-')
 
   length_of_finance = 180
   annual_interest_rate = 0.04000
-  down_payment = range(60_000, 170_000, 10_000)
+  down_payment = range(60000, 170000, 10000)
   deltas = [compute(dp, length_of_finance,
                     annual_interest_rate) for dp in down_payment]
   plt.plot(down_payment, deltas, '.b-')
