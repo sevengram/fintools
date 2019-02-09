@@ -52,16 +52,3 @@ SET Open     = NULLIF(@Open, ''),
   AdjHigh    = NULLIF(@AdjHigh, ''),
   AdjLow     = NULLIF(@AdjLow, ''),
   AdjClose   = NULLIF(@AdjClose, '');
-
-
-
-
-
-
-
-
-
-
-
-
-
