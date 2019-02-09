@@ -3,12 +3,11 @@ import datetime
 import sys
 import time
 
+from alpha_vantage.timeseries import TimeSeries
 from sqlalchemy import create_engine, Column, TIMESTAMP, CHAR, DATE, DECIMAL, \
   ForeignKey, Index
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
-from alpha_vantage.timeseries import TimeSeries
 
 conf = configparser.ConfigParser()
 
@@ -74,6 +73,7 @@ if __name__ == '__main__':
   ts = TimeSeries(key=alpha_vantage_key, output_format='json')
   for symbol in session.query(Security.symbol):
     resp = ts.get_quote_endpoint(symbol)[0]
+    print(resp)
     quote = DailyQuote(symbol=symbol,
                        date=resp['07. latest trading day'],
                        open=resp['02. open'],
@@ -82,8 +82,7 @@ if __name__ == '__main__':
                        close=resp['05. price'],
                        volume=resp['06. volume'],
                        previous_close=resp['08. previous close'])
-    session.add(quote)
-    session.commit()
-    print(resp)
+    session.merge(quote)
     time.sleep(15)
+  session.commit()
   session.close()
