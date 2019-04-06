@@ -1,12 +1,5 @@
 git+https://github.com/RomelTorres/alpha_vantage
-certifi==2018.11.29
-chardet==3.0.4
-idna==2.8
+matplotlib==3.0.2
 mysqlclient==1.4.1
 numpy==1.16.1
-python-dateutil==2.7.5
-pytz==2018.9
-requests==2.21.0
-six==1.12.0
 SQLAlchemy==1.2.17
-urllib3==1.24.1

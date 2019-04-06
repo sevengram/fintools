@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS StockPriceVolume (
+CREATE TABLE IF NOT EXISTS QuandlWikiStockPrices (
   Symbol            CHAR(10)                              NOT NULL,
   Date              DATE                                  NOT NULL,
   Open              decimal(19, 6)                        NULL,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS StockPriceVolume (
 
 LOAD DATA LOCAL INFILE
   '[CSV_FILE_NAME]'
-INTO TABLE StockPriceVolume
+INTO TABLE QuandlWikiStockPrices
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
