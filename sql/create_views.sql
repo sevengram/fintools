@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW LongTermInvestmentView AS
+CREATE OR REPLACE VIEW LongTermPositionView AS
   WITH t AS
   (
       SELECT
@@ -91,8 +91,74 @@ CREATE OR REPLACE VIEW AssetAllocationView AS
         FLOOR(
             DATEDIFF(
                 SUBDATE(CURDATE(), 1), a.FirstDate) / a.FrequencyInDays) RemainingCycles
-      FROM LongTermInvestmentView l
+      FROM LongTermPositionView l
         JOIN Securities s ON l.Symbol = s.Symbol
         JOIN AssetAllocationPlan a ON s.TypeId = a.TypeId
         JOIN InvestmentPlan i ON i.PlanId = a.PlanId
-      GROUP BY PlanId, TypeId) v;
+      GROUP BY PlanId, TypeId
+    ) v;
+
+CREATE OR REPLACE VIEW SpeculationHedgeView AS
+  WITH p AS
+    (
+      # Positions
+      SELECT
+        t.Symbol,
+        t.TypeId,
+        SUM(t.Quantity)                             AS OpenQuantity,
+        -SUM(t.PrincipalAmount) - SUM(t.Commission) AS Balance
+      FROM Transactions t
+      WHERE t.TypeId = 'HEDGE'
+         OR t.TypeId = 'SPECULATION'
+      GROUP BY 1, 2
+    ), c AS
+    (
+      # Closed positions
+      SELECT
+        p.TypeId,
+        SUM(Balance) AS ProfitOrLoss
+      FROM p
+      WHERE p.OpenQuantity = 0
+      GROUP BY 1
+    ), o AS
+    (
+      # Open positions
+      SELECT
+        p.TypeId,
+        SUM(Balance) AS OpenPosition
+      FROM p
+      WHERE p.OpenQuantity != 0
+      GROUP BY 1
+    ), t AS
+    (
+      SELECT
+        t.TypeId,
+        ((
+          SELECT SUM(MarketValue)
+          FROM ShortTermPositionView
+        ) + (
+          SELECT SUM(MarketValue)
+          FROM LongTermPositionView
+        )) * 0.05 AS TotalBase,
+        (
+          SELECT SUM(ProfitOrLoss)
+          FROM c
+        ) AS TotalProfitOrLoss,
+        (
+          CASE WHEN t.TypeId = 'HEDGE' THEN 0.6 ELSE 0.4 END
+        ) AS Percentage
+      FROM TransactionTypes t
+      WHERE t.TypeId = 'HEDGE'
+         OR t.TypeId = 'SPECULATION'
+    )
+    SELECT
+      t.TypeId,
+      ROUND(t.TotalBase * t.Percentage, 6) AS Base,
+      ROUND(COALESCE(c.ProfitOrLoss, 0), 6) AS ProfitOrLoss,
+      ROUND((t.TotalBase + t.TotalProfitOrLoss) * t.Percentage, 6) AS Balance,
+      ROUND(-COALESCE(o.OpenPosition, 0), 6) OpenPosition
+    FROM t
+    LEFT JOIN c
+      ON c.TypeId = t.TypeId
+    LEFT JOIN o
+      ON o.TypeId = t.TypeId;

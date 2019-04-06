@@ -44,11 +44,16 @@ class Security(Base):
   symbol = Column('Symbol', CHAR(10), nullable=False, primary_key=True)
   description = Column('Description', CHAR(120))
   exchange = Column('Exchange', CHAR(20), nullable=False)
-  type_id = Column('TypeId', CHAR(30), ForeignKey('SecurityTypes.TypeId',
-                                                  name='Securities_TypeIdFK'),
-                   nullable=False)
-  creation_timestamp = Column('CreationTimestamp', TIMESTAMP, nullable=False,
-                              default=datetime.datetime.now)
+  type_id = Column(
+      'TypeId',
+      CHAR(30),
+      ForeignKey(SecurityType.type_id, name='Securities_SecurityTypes_FK'),
+      nullable=False)
+  creation_timestamp = Column(
+      'CreationTimestamp',
+      TIMESTAMP,
+      nullable=False,
+      default=datetime.datetime.now)
 
 
 class DailyQuote(Base):
@@ -63,9 +68,12 @@ class DailyQuote(Base):
   volume = Column('Volume', DECIMAL(19, 6), nullable=False)
   previous_close = Column('PreviousClose', DECIMAL(19, 6), nullable=False)
   currency = Column('Currency', CHAR(5), nullable=False, server_default='USD')
-  creation_timestamp = Column('CreationTimestamp', TIMESTAMP, nullable=False,
-                              default=datetime.datetime.now)
-  Index('Date', date)
+  creation_timestamp = Column(
+      'CreationTimestamp',
+      TIMESTAMP,
+      nullable=False,
+      default=datetime.datetime.now)
+  Index('DailyQuote_Date_IDX', date)
 
 
 if __name__ == '__main__':
@@ -74,14 +82,15 @@ if __name__ == '__main__':
   for symbol in session.query(Security.symbol):
     resp = ts.get_quote_endpoint(symbol)[0]
     print(resp)
-    quote = DailyQuote(symbol=symbol,
-                       date=resp['07. latest trading day'],
-                       open=resp['02. open'],
-                       high=resp['03. high'],
-                       low=resp['04. low'],
-                       close=resp['05. price'],
-                       volume=resp['06. volume'],
-                       previous_close=resp['08. previous close'])
+    quote = DailyQuote(
+        symbol=symbol,
+        date=resp['07. latest trading day'],
+        open=resp['02. open'],
+        high=resp['03. high'],
+        low=resp['04. low'],
+        close=resp['05. price'],
+        volume=resp['06. volume'],
+        previous_close=resp['08. previous close'])
     session.merge(quote)
     time.sleep(15)
   session.commit()

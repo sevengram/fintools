@@ -127,3 +127,21 @@ CREATE TABLE `AssetAllocationPlan` (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `Dividends` (
+  `DividendId`        int(11)        NOT NULL AUTO_INCREMENT,
+  `Symbol`            char(10)       NOT NULL,
+  `Date`              date           NOT NULL,
+  `AccountId`         int(11)        NOT NULL,
+  `Amount`            decimal(13, 4) NOT NULL,
+  `Currency`          char(5)        NOT NULL DEFAULT 'USD',
+  `CreationTimestamp` timestamp      NOT NULL DEFAULT current_timestamp()
+  ON UPDATE current_timestamp(),
+  PRIMARY KEY (`DividendId`),
+  KEY `Dividends_Symbol_IDX` (`Symbol`),
+  KEY `Dividends_Date_IDX` (`Date`),
+  CONSTRAINT `Dividends_AccountId_FK` FOREIGN KEY
+    (`AccountId`) REFERENCES `Accounts` (`AccountId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
