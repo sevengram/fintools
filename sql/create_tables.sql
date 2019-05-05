@@ -145,3 +145,13 @@ CREATE TABLE `Dividends` (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `Industries` (
+  `SectorId`          int(11)        NOT NULL AUTO_INCREMENT,
+  `Description`       char(64)                DEFAULT NULL,
+  `CreationTimestamp` timestamp      NOT NULL DEFAULT current_timestamp()
+  ON UPDATE current_timestamp(),
+  PRIMARY KEY (`SectorId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;

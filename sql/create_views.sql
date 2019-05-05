@@ -32,7 +32,8 @@ CREATE OR REPLACE VIEW LongTermPositionView AS
       FROM t
         JOIN q ON t.Symbol = q.Symbol), 4) AS Weight
   FROM t
-    JOIN q ON t.Symbol = q.Symbol;
+    JOIN q ON t.Symbol = q.Symbol
+  WHERE t.Quantity != 0;
 
 
 CREATE OR REPLACE VIEW ShortTermPositionView AS
@@ -65,7 +66,8 @@ CREATE OR REPLACE VIEW ShortTermPositionView AS
     q.Close              AS CurrentPrice,
     t.Quantity * q.Close AS MarketValue
   FROM t
-    JOIN q ON t.Symbol = q.Symbol;
+    JOIN q ON t.Symbol = q.Symbol
+  WHERE t.Quantity != 0;
 
 CREATE OR REPLACE VIEW AssetAllocationView AS
   SELECT
