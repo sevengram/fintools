@@ -4,8 +4,14 @@ import sys
 import time
 
 from alpha_vantage.timeseries import TimeSeries
-from sqlalchemy import create_engine, Column, TIMESTAMP, CHAR, DATE, DECIMAL, \
-  ForeignKey, Index
+from sqlalchemy import CHAR
+from sqlalchemy import Column
+from sqlalchemy import DATE
+from sqlalchemy import DECIMAL
+from sqlalchemy import ForeignKey
+from sqlalchemy import Index
+from sqlalchemy import TIMESTAMP
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -14,11 +20,11 @@ conf = configparser.ConfigParser()
 conf.read(sys.argv[1])
 connection = conf['connection']
 engine = create_engine("mysql+mysqldb://%s:%s@%s:%s/%s" % (
-  connection['username'],
-  connection['password'],
-  connection['server_host'],
-  connection['port'],
-  connection['database']
+    connection['username'],
+    connection['password'],
+    connection['server_host'],
+    connection['port'],
+    connection['database']
 ))
 
 conf.read(sys.argv[2])

@@ -1,39 +1,43 @@
-CREATE TABLE `Accounts` (
+CREATE TABLE `Accounts`
+(
   `AccountId`         int(11)   NOT NULL AUTO_INCREMENT,
   `Brokerage`         char(20)  NOT NULL,
   `AccountNumber`     char(30)           DEFAULT NULL,
   `Description`       char(120)          DEFAULT NULL,
   `CreationTimestamp` timestamp NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`AccountId`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 
-CREATE TABLE `SecurityTypes` (
+CREATE TABLE `SecurityTypes`
+(
   `TypeId`            char(30)  NOT NULL,
   `Description`       char(120)          DEFAULT NULL,
   `CreationTimestamp` timestamp NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`TypeId`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 
-CREATE TABLE `TransactionTypes` (
+CREATE TABLE `TransactionTypes`
+(
   `TypeId`            char(30)  NOT NULL,
   `Description`       char(120)          DEFAULT NULL,
   `CreationTimestamp` timestamp NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`TypeId`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 
-CREATE TABLE `DailyQuote` (
+CREATE TABLE `DailyQuote`
+(
   `Symbol`            char(10)       NOT NULL,
   `Date`              date           NOT NULL,
   `Open`              decimal(19, 6) NOT NULL,
@@ -44,7 +48,7 @@ CREATE TABLE `DailyQuote` (
   `PreviousClose`     decimal(19, 6) NOT NULL,
   `Currency`          char(5)        NOT NULL DEFAULT 'USD',
   `CreationTimestamp` timestamp      NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`Symbol`, `Date`),
   KEY `DailyQuote_Date_IDX` (`Date`)
 )
@@ -52,7 +56,8 @@ CREATE TABLE `DailyQuote` (
   DEFAULT CHARSET = utf8mb4;
 
 
-CREATE TABLE `InvestmentPlan` (
+CREATE TABLE `InvestmentPlan`
+(
   `PlanId`              int(11)        NOT NULL AUTO_INCREMENT,
   `Description`         char(120)               DEFAULT NULL,
   `StartDate`           date           NOT NULL,
@@ -62,7 +67,7 @@ CREATE TABLE `InvestmentPlan` (
   `AdjustedTargetValue` decimal(19, 6) NOT NULL,
   `Currency`            char(5)        NOT NULL DEFAULT 'USD',
   `CreationTimestamp`   timestamp      NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`PlanId`),
   CONSTRAINT `InvestmentPlan_TransactionTypes_FK` FOREIGN KEY
     (`TypeId`) REFERENCES `TransactionTypes` (`TypeId`)
@@ -71,13 +76,14 @@ CREATE TABLE `InvestmentPlan` (
   DEFAULT CHARSET = utf8mb4;
 
 
-CREATE TABLE `Securities` (
+CREATE TABLE `Securities`
+(
   `Symbol`            char(10)  NOT NULL,
   `Description`       char(120)          DEFAULT NULL,
   `Exchange`          char(20)  NOT NULL,
   `TypeId`            char(30)  NOT NULL,
   `CreationTimestamp` timestamp NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`Symbol`),
   CONSTRAINT `Securities_SecurityTypes_FK` FOREIGN KEY
     (`TypeId`) REFERENCES `SecurityTypes` (`TypeId`)
@@ -86,7 +92,8 @@ CREATE TABLE `Securities` (
   DEFAULT CHARSET = utf8mb4;
 
 
-CREATE TABLE `Transactions` (
+CREATE TABLE `Transactions`
+(
   `TransactionId`     int(11)        NOT NULL AUTO_INCREMENT,
   `Symbol`            char(10)       NOT NULL,
   `Date`              date           NOT NULL,
@@ -94,11 +101,11 @@ CREATE TABLE `Transactions` (
   `TypeId`            char(30)       NOT NULL,
   `Quantity`          int(11)        NOT NULL,
   `Price`             decimal(13, 4) NOT NULL,
-  `PrincipalAmount`   decimal(13, 4)          GENERATED ALWAYS AS (`Price` * `Quantity`) VIRTUAL,
+  `PrincipalAmount`   decimal(13, 4) GENERATED ALWAYS AS (`Price` * `Quantity`) VIRTUAL,
   `Commission`        decimal(13, 4) NOT NULL DEFAULT 0,
   `Currency`          char(5)        NOT NULL DEFAULT 'USD',
   `CreationTimestamp` timestamp      NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`TransactionId`),
   KEY `Transactions_Symbol_IDX` (`Symbol`),
   KEY `Transactions_Date_IDX` (`Date`),
@@ -111,14 +118,15 @@ CREATE TABLE `Transactions` (
   DEFAULT CHARSET = utf8mb4;
 
 
-CREATE TABLE `AssetAllocationPlan` (
+CREATE TABLE `AssetAllocationPlan`
+(
   `PlanId`            int(11)       NOT NULL AUTO_INCREMENT,
   `TypeId`            char(30)      NOT NULL,
   `FirstDate`         date          NOT NULL,
   `FrequencyInDays`   int(11)       NOT NULL,
   `Weight`            decimal(6, 4) NOT NULL,
   `CreationTimestamp` timestamp     NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`PlanId`, `TypeId`),
   CONSTRAINT `AssetAllocationPlan_InvestmentPlan_FK` FOREIGN KEY
     (`PlanId`) REFERENCES `InvestmentPlan` (`PlanId`),
@@ -128,7 +136,8 @@ CREATE TABLE `AssetAllocationPlan` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-CREATE TABLE `Dividends` (
+CREATE TABLE `Dividends`
+(
   `DividendId`        int(11)        NOT NULL AUTO_INCREMENT,
   `Symbol`            char(10)       NOT NULL,
   `Date`              date           NOT NULL,
@@ -136,7 +145,7 @@ CREATE TABLE `Dividends` (
   `Amount`            decimal(13, 4) NOT NULL,
   `Currency`          char(5)        NOT NULL DEFAULT 'USD',
   `CreationTimestamp` timestamp      NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`DividendId`),
   KEY `Dividends_Symbol_IDX` (`Symbol`),
   KEY `Dividends_Date_IDX` (`Date`),
@@ -146,12 +155,27 @@ CREATE TABLE `Dividends` (
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-CREATE TABLE `Industries` (
-  `SectorId`          int(11)        NOT NULL AUTO_INCREMENT,
-  `Description`       char(64)                DEFAULT NULL,
-  `CreationTimestamp` timestamp      NOT NULL DEFAULT current_timestamp()
-  ON UPDATE current_timestamp(),
+CREATE TABLE `Industries`
+(
+  `SectorId`          int(11)   NOT NULL AUTO_INCREMENT,
+  `Description`       char(64)           DEFAULT NULL,
+  `CreationTimestamp` timestamp NOT NULL DEFAULT current_timestamp()
+    ON UPDATE current_timestamp(),
   PRIMARY KEY (`SectorId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `SecuritySectors`
+(
+  `Symbol`            char(10)      NOT NULL,
+  `SectorId`          int(11)       NOT NULL,
+  `Weight`            decimal(8, 6) NOT NULL,
+  `CreationTimestamp` timestamp     NOT NULL DEFAULT current_timestamp()
+    ON UPDATE current_timestamp(),
+  PRIMARY KEY (`Symbol`, `SectorId`),
+  CONSTRAINT `SecuritySectors_SectorId_FK` FOREIGN KEY
+    (`SectorId`) REFERENCES `Industries` (`SectorId`)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;

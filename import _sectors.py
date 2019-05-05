@@ -5,10 +5,8 @@ import sys
 
 from sqlalchemy import CHAR
 from sqlalchemy import Column
-from sqlalchemy import DATE
 from sqlalchemy import DECIMAL
 from sqlalchemy import ForeignKey
-from sqlalchemy import Index
 from sqlalchemy import Integer
 from sqlalchemy import TIMESTAMP
 from sqlalchemy import create_engine
@@ -32,50 +30,44 @@ Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
 
-class Accounts(Base):
-  __tablename__ = 'Accounts'
+class Industry(Base):
+  __tablename__ = 'Industries'
 
-  account_id = Column('AccountId', Integer, nullable=False, primary_key=True)
-  brokerage = Column('Brokerage', CHAR(20), nullable=False)
-  account_number = Column('AccountNumber', CHAR(30))
-  description = Column('Description', CHAR(120))
+  sector_id = Column('SectorId', Integer, nullable=False, primary_key=True)
+  description = Column('Description', CHAR(64))
   creation_timestamp = Column('CreationTimestamp', TIMESTAMP, nullable=False,
                               default=datetime.datetime.now)
 
 
-class Dividend(Base):
-  __tablename__ = 'Dividends'
+class SecuritySector(Base):
+  __tablename__ = 'SecuritySectors'
 
-  type_id = Column('DividendId', Integer, nullable=False, primary_key=True)
-  symbol = Column('Symbol', CHAR(10), nullable=False)
-  date = Column('Date', DATE, nullable=False)
-  accountId = Column(
-      'AccountId',
+  symbol = Column('Symbol', CHAR(10), nullable=False, primary_key=True)
+  sector_id = Column(
+      'SectorId',
       Integer,
-      ForeignKey(Accounts.account_id, name='Dividends_AccountId_FK'),
-      nullable=False)
-  amount = Column('Amount', DECIMAL(13, 4), nullable=False)
-  currency = Column('Currency', CHAR(5), nullable=False, server_default='USD')
+      ForeignKey(Industry.sector_id, name='SecuritySectors_SectorId_FK'),
+      nullable=False,
+      primary_key=True)
+  weight = Column('Weight', DECIMAL(8, 6), nullable=False)
   creation_timestamp = Column(
       'CreationTimestamp',
       TIMESTAMP,
       nullable=False,
       default=datetime.datetime.now)
 
-  Index('Dividends_Symbol_IDX', symbol)
-  Index('Dividends_Date_IDX', date)
-
 
 if __name__ == '__main__':
   session = Session()
+  sector_map = {description: sector_id for sector_id, description in
+                session.query(Industry.sector_id, Industry.description)}
   with open(sys.argv[1]) as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-      dividend = Dividend(
+      security_sector = SecuritySector(
           symbol=row['Symbol'],
-          date=datetime.datetime.strptime(row['Date'], '%m/%d/%Y'),
-          accountId=2,
-          amount=float(row['Amount'].replace('$', '')))
-      session.add(dividend)
+          sector_id=sector_map[row['Sector']],
+          weight=row['Weight'])
+      session.add(security_sector)
   session.commit()
   session.close()
