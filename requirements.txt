@@ -2,4 +2,4 @@ git+https://github.com/RomelTorres/alpha_vantage
 matplotlib==3.0.2
 mysqlclient==1.4.1
 numpy==1.16.1
-SQLAlchemy==1.2.17
+SQLAlchemy>=1.3.0
