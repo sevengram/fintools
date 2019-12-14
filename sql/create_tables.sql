@@ -179,3 +179,28 @@ CREATE TABLE `SecuritySectors`
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `Regions`
+(
+  `RegionId`          char(5)   NOT NULL,
+  `Description`       char(64)           DEFAULT NULL,
+  `CreationTimestamp` timestamp NOT NULL DEFAULT current_timestamp()
+    ON UPDATE current_timestamp(),
+  PRIMARY KEY (`RegionId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `SecurityRegions`
+(
+  `Symbol`            char(10)      NOT NULL,
+  `RegionId`          char(5)       NOT NULL,
+  `Weight`            decimal(8, 6) NOT NULL,
+  `CreationTimestamp` timestamp     NOT NULL DEFAULT current_timestamp()
+    ON UPDATE current_timestamp(),
+  PRIMARY KEY (`Symbol`, `RegionId`),
+  CONSTRAINT `SecurityRegions_RegionId_FK` FOREIGN KEY
+    (`RegionId`) REFERENCES `Regions` (`RegionId`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;

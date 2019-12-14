@@ -1,13 +1,12 @@
+import bisect
 import configparser
 import sys
-import time
 
 from alpha_vantage.timeseries import TimeSeries
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from finance_tables import DailyQuote
-from finance_tables import Security
 
 conf = configparser.ConfigParser()
 
@@ -29,19 +28,21 @@ Session = sessionmaker(bind=engine)
 if __name__ == '__main__':
   session = Session()
   ts = TimeSeries(key=alpha_vantage_key, output_format='json')
-  for symbol in session.query(Security.symbol):
-    resp = ts.get_quote_endpoint(symbol)[0]
-    print(resp)
-    quote = DailyQuote(
-        symbol=symbol,
-        date=resp['07. latest trading day'],
-        open=resp['02. open'],
-        high=resp['03. high'],
-        low=resp['04. low'],
-        close=resp['05. price'],
-        volume=resp['06. volume'],
-        previous_close=resp['08. previous close'])
-    session.merge(quote)
-    time.sleep(15)
+  result = ts.get_daily(symbol='SPY', outputsize='full')[0]
+
+  previous_close = result['2018-09-14']['4. close']
+  sorted_dates = sorted(result)
+  for key in sorted_dates[bisect.bisect_right(sorted_dates, '2018-09-14'):]:
+    quote = result[key]
+    session.merge(DailyQuote(
+        symbol='SPY',
+        date=key,
+        open=quote['1. open'],
+        high=quote['2. high'],
+        low=quote['3. low'],
+        close=quote['4. close'],
+        volume=quote['5. volume'],
+        previous_close=previous_close))
+    previous_close = quote['4. close']
   session.commit()
   session.close()
