@@ -153,7 +153,7 @@ WITH p AS
         FROM c
       ) AS TotalProfitOrLoss,
       (
-        CASE WHEN t.TypeId = 'HEDGE' THEN 0.6 ELSE 0.4 END
+        IF(t.TypeId = 'HEDGE', 0.6, 0.4)
       ) AS Percentage
     FROM TransactionTypes t
     WHERE t.TypeId = 'HEDGE'
