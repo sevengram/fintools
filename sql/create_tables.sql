@@ -204,3 +204,15 @@ CREATE TABLE `SecurityRegions`
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+  
+CREATE TABLE `DividendHistory` (
+  `Symbol` char(10) NOT NULL,
+  `ExDate` date NOT NULL,
+  `Dividend` decimal(13,8) NOT NULL,
+  `Currency` char(5) NOT NULL DEFAULT 'USD',
+  `CreationTimestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`Symbol`,`ExDate`),
+  KEY `DividendHistory_ExDate_IDX` (`ExDate`)
+)
+  ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4;
